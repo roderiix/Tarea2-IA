@@ -9,8 +9,13 @@ alpha = 0.01
 #print(datos)
 
 reg = Regresion(data=datos, alpha=alpha)
-reg.gradiente(itr)
-print(f'Theta Gradiente: {reg.theta}')
-print(f'Theta Normal: {reg.normal()}')
-print(f'Prediccion 35000 personas: {reg.hipotesis(35000)}')
-print(f'Prediccion 70000 personas: {reg.hipotesis(70000)}')
+# # reg.gradiente(itr)
+# print(f'Theta Gradiente: {reg.theta}')
+# print(f'Theta Normal: {reg.normal()}')
+# print(f'Prediccion 35000 personas: {reg.hipotesis(35000)}')
+# print(f'Prediccion 70000 personas: {reg.hipotesis(70000)}')
+
+for i in range(itr):
+    costo,theta=reg._calculo_gradiente()
+    reg.theta=theta
+    print(costo)

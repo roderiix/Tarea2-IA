@@ -22,7 +22,7 @@ class Regresion:
 
     def _calculo_gradiente(self, theta: Optional[np.array] = None):
         if type(theta) != np.ndarray: theta = self.theta
-        _theta = np.array(self.theta)
+        _theta = np.array(theta)
         aux = self.x.dot(theta)
         
         for i in range(_theta.shape[0]):
