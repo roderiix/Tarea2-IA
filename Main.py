@@ -73,7 +73,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range (len(datos[:,1])):
             y.append(datos[:,1][i])
         pen = pg.mkPen(color=(255, 255, 255))
-        self.graph_data.plot(x, y,pen=pen,symbol='+',symbolSize=10)
+        self.graph_data.plot(x, y,pen=pen,symbol='x',symbolSize=10)
 
         #grafico 2 costo
         for i in range(itr):
@@ -82,8 +82,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
             itr_arr.append(i)
             costo_arr.append(costo)
-            theta1_arr.append(theta[0])
-            theta2_arr.append(theta[1])
+            # theta1_arr.append(theta[0])
+            # theta2_arr.append(theta[1])
 
             self.cost_line.setData(itr_arr, costo_arr)
             self.itr_progress.setValue(int((i+1)*100/itr))
@@ -93,7 +93,24 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.theta2_input.setValue(theta[1])
         
         #grafico 3 3D
-        p1 = gl.GLSurfacePlotItem(x=np.array(theta1_arr),y=np.array(theta2_arr),z=np.array(costo_arr), shader='shaded', color=(0.5, 0.5, 1, 1))
+        theta0arr=np.arange(self.reg.minTheta[0]*2,self.reg.maxTheta[0],0.4)
+        theta1arr=np.arange(self.reg.minTheta[1]*2,self.reg.maxTheta[1],0.125)
+        # print(theta1arr.size,theta0arr.size)
+        theta0arr, theta1arr = np.meshgrid(theta0arr, theta1arr)
+        J = np.zeros((theta0arr.size, theta1arr.size))
+        print(J)
+        for index, v in np.ndenumerate(J):
+            print(index)
+            J[index] = self.reg.costo([theta0arr[index],theta1arr[index]])    
+        # xs = np.arange(-10, 10, 0.4)
+        # ys = np.arange(-2, 5, 0.14)
+        # xx, yy = np.meshgrid(xs, ys)
+        # J = np.zeros((xs.size, ys.size))
+        # for index, v in np.ndenumerate(J):
+        #     J[index] = self.reg.costo([xx[index],yy[index]])    
+        # z=pg.gaussianFilter(np.random.normal(size=(25,25)), (1,1))
+        p1 = gl.GLSurfacePlotItem(z=J, shader='shaded', color=(0.5, 0.5, 1, 1))
+        
         self.graph_3d.addItem(p1)
         
 

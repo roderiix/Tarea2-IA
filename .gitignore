@@ -5,3 +5,5 @@ untitled2.ui
 __pycache__/IA.cpython-38.pyc
 /Regresion/*
 Pipfile.lock
+__pycache__/Reader.cpython-38.pyc
+__pycache__/Regresion.cpython-38.pyc

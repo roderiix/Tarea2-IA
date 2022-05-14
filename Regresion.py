@@ -7,7 +7,8 @@ class Regresion:
         self.theta = np.array(theta) if theta else np.array(np.zeros(data.shape[1]))
         self.alpha = alpha or 0.01
         self.m = len(data)
-
+        self.minTheta=np.array(np.zeros(2))
+        self.maxTheta=np.array(np.zeros(2))
         self.x = np.append(np.ones((self.m, 1)), np.reshape(np.array(data[:, 0]), (self.m, 1)), axis=1)
         self.y = np.array(data[:, 1])
     
@@ -28,6 +29,10 @@ class Regresion:
         
         for i in range(_theta.shape[0]):
             _theta[i] = float(_theta[i] - self.alpha*np.array((aux - self.y)*self.x[:, i]).sum()/self.m)
+        if (_theta[0]>self.maxTheta[0]):self.maxTheta[0]=_theta[0]
+        if (_theta[0]<self.minTheta[0]):self.minTheta[0]=_theta[0]
+        if (_theta[1]>self.maxTheta[1]):self.maxTheta[1]=_theta[1]
+        if (_theta[1]<self.minTheta[1]):self.minTheta[1]=_theta[1]
         return self.costo(_theta),_theta
     
     def gradiente(self, itr):

@@ -16,22 +16,22 @@ for point in np.arange(10):
     ScatterPlotItems[point] = gl.GLScatterPlotItem(pos=pos[:,point,:])
     w.addItem(ScatterPlotItems[point])
 
-color = np.zeros((pos.shape[0],10,4), dtype=np.float32)
-color[:,:,0] = 1
-color[:,:,1] = 0
-color[:,:,2] = 0.5
-color[0:5,:,3] = np.tile(np.arange(1,6)/5., (10,1)).T
+# color = np.zeros((pos.shape[0],10,4), dtype=np.float32)
+# color[:,:,0] = 1
+# color[:,:,1] = 0
+# color[:,:,2] = 0.5
+# color[0:5,:,3] = np.tile(np.arange(1,6)/5., (10,1)).T
 
-def update():
-    ## update volume colors
-    global color
-    for point in np.arange(10):
-        ScatterPlotItems[point].setData(color=color[:,point,:])
-    color = np.roll(color,1, axis=0)
+# def update():
+#     ## update volume colors
+#     global color
+#     for point in np.arange(10):
+#         ScatterPlotItems[point].setData(color=color[:,point,:])
+#     color = np.roll(color,1, axis=0)
 
-t = QtCore.QTimer()
-t.timeout.connect(update)
-t.start(1000)
+# t = QtCore.QTimer()
+# t.timeout.connect(update)
+# t.start(1000)
 
 
 ## Start Qt event loop unless running in interactive mode.

@@ -267,6 +267,9 @@
     <string>Theta</string>
    </property>
    <widget class="QDoubleSpinBox" name="theta1_input">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -277,6 +280,9 @@
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="theta2_input">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>40</x>
