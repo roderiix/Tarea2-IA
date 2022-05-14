@@ -1,7 +1,7 @@
 from asyncio import sleep
 import sys
 from PyQt5 import uic, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
 import pyqtgraph.opengl as gl
@@ -33,7 +33,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.graph_3d.opts['distance'] = 75
         self.graph_3d.show()
-        
+        self.direccion=''
         tamania=40
         gx = gl.GLGridItem()
         gx.setSize(tamania,tamania,tamania)
@@ -52,15 +52,39 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         
         self.cost_line = self.graph_cost.plot()
         self.graph_data.plot()
-        self.btn_start.clicked.connect(lambda:self.grafico())
+        self.btn_start.clicked.connect(lambda:self.verificarArchivo())
         self.search_btn.clicked.connect(lambda:self.probar_valor())
+        self.btn_buscar.clicked.connect(lambda:self.buscarArchivo())
+        self.btn_leerArchivo.clicked.connect(lambda:self.leerArchivo())
+
+
+    def Msj_Error(self):
+        EntryMsg = QMessageBox()
+        EntryMsg.setIcon(QMessageBox.Warning)
+        EntryMsg.setWindowTitle('Error!')
+        EntryMsg.setText('No hay archivo seleccionado')
+        EntryMsg.setStandardButtons(QMessageBox.Ok)
+        EntryMsg.setDefaultButton(QMessageBox.Ok)
+        EntryMsg.exec_()
+
+    def buscarArchivo(self):
+        fname = QFileDialog.getOpenFileName(self, 'Buscar archivo', '', 'Data File (*.txt)'),
+        if fname:
+            self.file_path.setText(str(fname[0][0]))
+    
+    def leerArchivo(self):
+        self.direccion=self.file_path.text()
+
+    def verificarArchivo(self):
+        if self.direccion: self.grafico()
+        else: self.Msj_Error()
 
     def grafico(self):
 
         itr = self.itr_input.value()
         alpha = self.alpha_input.value()
 
-        reader = Reader('data1.txt')
+        reader = Reader(self.direccion)
         datos = reader.txt_to_array()
         self.reg=Regresion(data=datos, alpha=alpha)
 

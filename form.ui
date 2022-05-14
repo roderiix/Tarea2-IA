@@ -158,20 +158,10 @@
    <property name="title">
     <string>Datos</string>
    </property>
-   <widget class="QDialogButtonBox" name="file_btn">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>70</y>
-      <width>166</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="standardButtons">
-     <set>QDialogButtonBox::Open|QDialogButtonBox::Reset</set>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="file_path">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -179,6 +169,35 @@
       <width>191</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="frame">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_buscar">
+    <property name="geometry">
+     <rect>
+      <x>114</x>
+      <y>70</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Buscar</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_leerArchivo">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Leer</string>
     </property>
    </widget>
   </widget>
