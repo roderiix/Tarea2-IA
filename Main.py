@@ -101,6 +101,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             y.append(datos[:,1][i])
         pen = pg.mkPen(color=(255, 255, 255))
         self.graph_data.plot(x, y,pen=pen,symbol='x',symbolSize=10)
+    
 
         #grafico 2 costo
         for i in range(itr):
@@ -116,7 +117,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #resultados
         self.theta1_input.setValue(theta[0])
         self.theta2_input.setValue(theta[1])
-        
+
+        valorX = np.arange(4, 27) 
+        valorY =[]
+        for i in valorX:
+            valorY.append(self.reg.hipotesis(i))
+        pen = pg.mkPen(color=(0, 0, 0))
+        self.graph_data.plot(valorX, valorY,pen=pen)
         #grafico 3 3D
         xs=np.linspace(self.reg.minTheta[0],self.reg.maxTheta[0],50)
         ys=np.linspace(self.reg.minTheta[1],self.reg.maxTheta[1],50)
