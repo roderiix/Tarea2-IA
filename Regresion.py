@@ -11,8 +11,9 @@ class Regresion:
         self.x = np.append(np.ones((self.m, 1)), np.reshape(np.array(data[:, 0]), (self.m, 1)), axis=1)
         self.y = np.array(data[:, 1])
     
-    def hipotesis(self, x):
+    def hipotesis(self, x, theta: Optional[np.array] = None):
         if type(x) != np.ndarray: x = np.array(x)
+        if type(theta) != np.ndarray: theta = self.theta
         if x.shape != (2,): x = np.append([1], x)
         return np.sum(x.dot(self.theta))
 
