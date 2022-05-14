@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Optional
+from typing import Optional,Union
 
 class Regresion:
 
@@ -18,8 +18,10 @@ class Regresion:
         if x.shape != (2,): x = np.append([1], x)
         return np.sum(x.dot(self.theta))
 
-    def costo(self, theta: Optional[np.array] = None):
-        if type(theta) != np.ndarray: theta = self.theta
+    def costo(self, theta: Optional[Union[np.ndarray, list]] = None):
+        # if type(theta) != np.ndarray: theta = self.theta
+        if type(theta)!='NoneType':theta=np.array(theta)
+        else: theta = self.theta
         return np.sum((self.x.dot(theta).transpose() - self.y)**2)/(2*self.m)
 
     def _calculo_gradiente(self, theta: Optional[np.array] = None):

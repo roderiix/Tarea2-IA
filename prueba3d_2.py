@@ -2,88 +2,102 @@ import numpy as np
 
 import pyqtgraph as pg
 import pyqtgraph.opengl as gl
+from pyqtgraph import functions as fn
 from pyqtgraph.Qt import QtCore
 
-## Create a GL View widget to display data
-app = pg.mkQApp("GLSurfacePlot Example")
+app = pg.mkQApp("GLScatterPlotItem Example")
 w = gl.GLViewWidget()
 w.show()
-w.setWindowTitle('pyqtgraph example: GLSurfacePlot')
-w.setCameraPosition(distance=50)
+w.setWindowTitle('pyqtgraph example: GLScatterPlotItem')
+w.setCameraPosition(distance=20)
 
-## Add a grid to the view
 g = gl.GLGridItem()
-g.scale(2,2,1)
-g.setDepthValue(10)  # draw grid after surfaces since they may be translucent
 w.addItem(g)
 
 
-## Simple surface plot example
-## x, y values are not specified, so assumed to be 0:50
-z = pg.gaussianFilter(np.random.normal(size=(50,50)), (1,1))
-print(z)
-p1 = gl.GLSurfacePlotItem(z=z, shader='shaded', color=(0.5, 0.5, 1, 1))
-# p1.scale(16./49., 16./49., 1.0)
-p1.translate(-25, -25, 0)
-w.addItem(p1)
+##
+##  First example is a set of points with pxMode=False
+##  These demonstrate the ability to have points with real size down to a very small scale 
+## 
+pos = np.empty((53, 3))
+size = np.empty((53))
+color = np.empty((53, 4))
+pos[0] = (1,0,0); size[0] = 0.5;   color[0] = (1.0, 0.0, 0.0, 0.5)
+pos[1] = (0,1,0); size[1] = 0.2;   color[1] = (0.0, 0.0, 1.0, 0.5)
+pos[2] = (0,0,1); size[2] = 2./3.; color[2] = (0.0, 1.0, 0.0, 0.5)
 
-
-## Saddle example with x and y specified
-# x = np.linspace(-8, 8, 50)
-# y = np.linspace(-8, 8, 50)
-# z = 0.1 * ((x.reshape(50,1) ** 2) - (y.reshape(1,50) ** 2))
-# p2 = gl.GLSurfacePlotItem(x=x, y=y, z=z, shader='normalColor')
-# p2.translate(-10,-10,0)
-# w.addItem(p2)
-
-
-## Manually specified colors
-# z = pg.gaussianFilter(np.random.normal(size=(50,50)), (1,1))
-# x = np.linspace(-12, 12, 50)
-# y = np.linspace(-12, 12, 50)
-# colors = np.ones((50,50,4), dtype=float)
-# colors[...,0] = np.clip(np.cos(((x.reshape(50,1) ** 2) + (y.reshape(1,50) ** 2)) ** 0.5), 0, 1)
-# colors[...,1] = colors[...,0]
-
-# p3 = gl.GLSurfacePlotItem(z=z, colors=colors.reshape(50*50,4), shader='shaded', smooth=False)
-# p3.scale(16./49., 16./49., 1.0)
-# p3.translate(2, -18, 0)
-# w.addItem(p3)
-
-
-
-
-## Animated example
-## compute surface vertex data
-cols = 90
-rows = 100
-x = np.linspace(-8, 8, cols+1).reshape(cols+1,1)
-y = np.linspace(-8, 8, rows+1).reshape(1,rows+1)
-d = (x**2 + y**2) * 0.1
-d2 = d ** 0.5 + 0.1
-
-## precompute height values for all frames
-phi = np.arange(0, np.pi*2, np.pi/20.)
-z = np.sin(d[np.newaxis,...] + phi.reshape(phi.shape[0], 1, 1)) / d2[np.newaxis,...]
-
-
-## create a surface plot, tell it to use the 'heightColor' shader
-## since this does not require normal vectors to render (thus we 
-## can set computeNormals=False to save time when the mesh updates)
-p4 = gl.GLSurfacePlotItem(x=x[:,0], y = y[0,:], shader='heightColor', computeNormals=False, smooth=False)
-p4.shader()['colorMap'] = np.array([0.2, 2, 0.5, 0.2, 1, 1, 0.2, 0, 2])
-p4.translate(10, 10, 0)
-w.addItem(p4)
-
-# index = 0
-# # def update():
-# #     global p4, z, index
-# #     index -= 1
-# #     p4.setData(z=z[index%z.shape[0]])
+z = 0.5
+d = 6.0
+for i in range(3,53):
+    pos[i] = (0,0,z)
+    size[i] = 2./d
+    color[i] = (0.0, 1.0, 0.0, 0.5)
+    z *= 0.5
+    d *= 2.0
     
-# timer = QtCore.QTimer()
-# timer.timeout.connect(update)
-# timer.start(30)
+sp1 = gl.GLScatterPlotItem(pos=pos, size=size, color=color, pxMode=False)
+sp1.translate(5,5,0)
+w.addItem(sp1)
+
+
+##
+##  Second example shows a volume of points with rapidly updating color
+##  and pxMode=True
+##
+
+pos = np.random.random(size=(100000,3))
+pos *= [10,-10,10]
+pos[0] = (0,0,0)
+color = np.ones((pos.shape[0], 4))
+d2 = (pos**2).sum(axis=1)**0.5
+size = np.random.random(size=pos.shape[0])*10
+sp2 = gl.GLScatterPlotItem(pos=pos, color=(1,1,1,1), size=size)
+phase = 0.
+
+w.addItem(sp2)
+
+
+##
+##  Third example shows a grid of points with rapidly updating position
+##  and pxMode = False
+##
+
+pos3 = np.zeros((100,100,3))
+pos3[:,:,:2] = np.mgrid[:100, :100].transpose(1,2,0) * [-0.1,0.1]
+pos3 = pos3.reshape(10000,3)
+d3 = (pos3**2).sum(axis=1)**0.5
+
+sp3 = gl.GLScatterPlotItem(pos=pos3, color=(1,1,1,.3), size=0.1, pxMode=False)
+
+w.addItem(sp3)
+
+
+def update():
+    ## update volume colors
+    global phase, sp2, d2
+    s = -np.cos(d2*2+phase)
+    color = np.empty((len(d2),4), dtype=np.float32)
+    color[:,3] = fn.clip_array(s * 0.1, 0., 1.)
+    color[:,0] = fn.clip_array(s * 3.0, 0., 1.)
+    color[:,1] = fn.clip_array(s * 1.0, 0., 1.)
+    color[:,2] = fn.clip_array(s ** 3, 0., 1.)
+    sp2.setData(color=color)
+    phase -= 0.1
+    
+    ## update surface positions and colors
+    global sp3, d3, pos3
+    z = -np.cos(d3*2+phase)
+    pos3[:,2] = z
+    color = np.empty((len(d3),4), dtype=np.float32)
+    color[:,3] = 0.3
+    color[:,0] = np.clip(z * 3.0, 0, 1)
+    color[:,1] = np.clip(z * 1.0, 0, 1)
+    color[:,2] = np.clip(z ** 3, 0, 1)
+    sp3.setData(pos=pos3, color=color)
+    
+t = QtCore.QTimer()
+t.timeout.connect(update)
+t.start(50)
 
 if __name__ == '__main__':
     pg.exec()

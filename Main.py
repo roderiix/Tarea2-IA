@@ -31,19 +31,23 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graph_data.setTitle("Habitantes/Precio", color="black", size="15pt")
         self.graph_data.setBackground('w')
 
-        self.graph_3d.opts['distance'] = 40
+        self.graph_3d.opts['distance'] = 75
         self.graph_3d.show()
-
+        
+        tamania=40
         gx = gl.GLGridItem()
+        gx.setSize(tamania,tamania,tamania)
         gx.rotate(90, 0, 1, 0)
-        gx.translate(-10, 0, 0)
+        gx.translate(-20, 0, 0)
         self.graph_3d.addItem(gx)
         gy = gl.GLGridItem()
+        gy.setSize(tamania,tamania,tamania)
         gy.rotate(90, 1, 0, 0)
-        gy.translate(0, -10, 0)
+        gy.translate(0, -20, 0)
         self.graph_3d.addItem(gy)
         gz = gl.GLGridItem()
-        gz.translate(0, 0, -10)
+        gz.setSize(tamania,tamania,tamania)
+        gz.translate(0, 0, -20)
         self.graph_3d.addItem(gz)
         
         self.cost_line = self.graph_cost.plot()
@@ -62,8 +66,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         itr_arr = []
         costo_arr = []
-        theta1_arr = []
-        theta2_arr = []
+    
 
 
         # grafico 1 datos
@@ -82,8 +85,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
             itr_arr.append(i)
             costo_arr.append(costo)
-            # theta1_arr.append(theta[0])
-            # theta2_arr.append(theta[1])
 
             self.cost_line.setData(itr_arr, costo_arr)
             self.itr_progress.setValue(int((i+1)*100/itr))
@@ -93,24 +94,17 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.theta2_input.setValue(theta[1])
         
         #grafico 3 3D
-        theta0arr=np.arange(self.reg.minTheta[0]*2,self.reg.maxTheta[0],0.4)
-        theta1arr=np.arange(self.reg.minTheta[1]*2,self.reg.maxTheta[1],0.125)
-        # print(theta1arr.size,theta0arr.size)
-        theta0arr, theta1arr = np.meshgrid(theta0arr, theta1arr)
-        J = np.zeros((theta0arr.size, theta1arr.size))
-        print(J)
-        for index, v in np.ndenumerate(J):
-            print(index)
-            J[index] = self.reg.costo([theta0arr[index],theta1arr[index]])    
+        xs=np.linspace(self.reg.minTheta[0],self.reg.maxTheta[0],50)
+        ys=np.linspace(self.reg.minTheta[1],self.reg.maxTheta[1],50)
         # xs = np.arange(-10, 10, 0.4)
         # ys = np.arange(-2, 5, 0.14)
-        # xx, yy = np.meshgrid(xs, ys)
-        # J = np.zeros((xs.size, ys.size))
-        # for index, v in np.ndenumerate(J):
-        #     J[index] = self.reg.costo([xx[index],yy[index]])    
-        # z=pg.gaussianFilter(np.random.normal(size=(25,25)), (1,1))
-        p1 = gl.GLSurfacePlotItem(z=J, shader='shaded', color=(0.5, 0.5, 1, 1))
-        
+        theta0arr, theta1arr = np.meshgrid(xs, ys)
+        J = np.zeros((xs.size, ys.size))
+        for index, v in np.ndenumerate(J):
+            J[index] = self.reg.costo([theta0arr[index],theta1arr[index]])
+
+        p1 = gl.GLSurfacePlotItem(x=xs*10,y=ys*20,z=J/2, shader='normalColor')
+        p1.translate(20, -10, -10)
         self.graph_3d.addItem(p1)
         
 
