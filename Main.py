@@ -67,8 +67,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
         # grafico 1 datos
+        x,y=[],[]
+        for i in range (len(datos[:,0])):
+            x.append(datos[:,0][i])
+        for i in range (len(datos[:,1])):
+            y.append(datos[:,1][i])
         pen = pg.mkPen(color=(255, 255, 255))
-        self.graph_data.plot(datos[:,0], datos[:,1],pen=pen,symbol='+',symbolSize=10)
+        self.graph_data.plot(x, y,pen=pen,symbol='+',symbolSize=10)
 
         #grafico 2 costo
         for i in range(itr):
@@ -81,7 +86,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             theta2_arr.append(theta[1])
 
             self.cost_line.setData(itr_arr, costo_arr)
-            self.itr_progress.setValue(int(i*100/itr)+1)
+            self.itr_progress.setValue(int((i+1)*100/itr))
 
         #resultados
         self.theta1_input.setValue(theta[0])
