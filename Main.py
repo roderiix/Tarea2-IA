@@ -87,6 +87,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         # else:
         #     self.running = True
         #     self.btn_start.setText('Abortar')
+        #     self.graph_data.clear()
+        #     self.graph_cost.clear()
+        #     self.graph_3d.clear()
 
         itr = self.itr_input.value()
         alpha = self.alpha_input.value()
@@ -103,7 +106,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #     return
     
         # 1 - graph data
-        
         pen = pg.mkPen(color=(255, 255, 255))
         self.graph_data.plot(datos[:,0], datos[:,1],pen=pen,symbol='x',symbolSize=10)
 
@@ -142,6 +144,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         cost_arr = []
         itr_arr = []
+
+        graph_data_item = None
         for i in range(itr):
             if self.running and self.stop: return
             costo,theta=self.reg._calculo_gradiente(set_value=True)
@@ -166,14 +170,16 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             # pen = pg.mkPen(color=(0, 0, 0))
             # self.graph_data.plot(valorX, valorY,pen=pen)
 
-            ## infinite line
-            # hipotesis = pg.InfiniteLine(
-            #     movable=False,
-            #     angle=degree([itr,self.reg.hipotesis(itr)],[1,0]),
-            #     pen='g'
-            # )
-            # hipotesis.setPos([itr, self.reg.hipotesis(itr)])
-            # self.graph_data.addItem(hipotesis)
+            # infinite line
+            if graph_data_item:
+                self.graph_data.removeItem(graph_data_item)
+            graph_data_item = pg.InfiniteLine(
+                pos=[itr, self.reg.hipotesis(itr)],
+                movable=False,
+                angle=degree([itr,self.reg.hipotesis(itr)],[1,0]),
+                pen='g'
+            )
+            self.graph_data.addItem(graph_data_item)
 
             QtWidgets.QApplication.processEvents()
 
