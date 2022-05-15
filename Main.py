@@ -57,7 +57,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btn_start.clicked.connect(lambda:self.verificarArchivo())
         self.search_btn.clicked.connect(lambda:self.probar_valor())
         self.btn_buscar.clicked.connect(lambda:self.buscarArchivo())
-        self.btn_leerArchivo.clicked.connect(lambda:self.leerArchivo())
 
     def Msj_Error(self):
         EntryMsg = QMessageBox()
@@ -72,9 +71,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         fname = QFileDialog.getOpenFileName(self, 'Buscar archivo', '', 'Data File (*.txt)'),
         if fname:
             self.file_path.setText(str(fname[0][0]))
-    
-    def leerArchivo(self):
-        self.direccion=self.file_path.text()
+            self.direccion=self.file_path.text()
 
     def verificarArchivo(self):
         if self.direccion: self.grafico()
@@ -106,8 +103,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #     return
     
         # 1 - graph data
+        x1,y1=[],[]
+        for i in range (len(datos[:,0])):
+            x1.append(datos[:,0][i])
+            y1.append(datos[:,1][i])
         pen = pg.mkPen(color=(255, 255, 255))
-        self.graph_data.plot(datos[:,0], datos[:,1],pen=pen,symbol='x',symbolSize=10)
+        self.graph_data.plot(x1, y1,pen=pen,symbol='x',symbolSize=10)   
 
         #2 - graph 3d surface
 
@@ -174,7 +175,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             if graph_data_item:
                 self.graph_data.removeItem(graph_data_item)
             graph_data_item = pg.InfiniteLine(
-                pos=[itr, self.reg.hipotesis(itr)],
+                pos=[0, self.reg.hipotesis(0)],
                 movable=False,
                 angle=degree([itr,self.reg.hipotesis(itr)],[1,0]),
                 pen='g'
