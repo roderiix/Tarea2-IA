@@ -24,7 +24,7 @@ class Regresion:
         else: theta = self.theta
         return np.sum((self.x.dot(theta).transpose() - self.y)**2)/(2*self.m)
 
-    def _calculo_gradiente(self, theta: Optional[np.array] = None):
+    def _calculo_gradiente(self, set_value: Optional[bool] = False, theta: Optional[np.array] = None):
         if type(theta) != np.ndarray: theta = self.theta
         _theta = np.array(theta)
         aux = self.x.dot(theta)
@@ -35,6 +35,7 @@ class Regresion:
         if (_theta[0]<self.minTheta[0]):self.minTheta[0]=_theta[0]
         if (_theta[1]>self.maxTheta[1]):self.maxTheta[1]=_theta[1]
         if (_theta[1]<self.minTheta[1]):self.minTheta[1]=_theta[1]
+        if set_value: self.theta = _theta
         return self.costo(_theta),_theta
     
     def gradiente(self, itr):
