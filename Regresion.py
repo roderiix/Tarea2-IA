@@ -1,5 +1,6 @@
 import numpy as np
 from typing import Optional,Union
+from misc import *
 
 class Regresion:
 
@@ -22,6 +23,7 @@ class Regresion:
         # if type(theta) != np.ndarray: theta = self.theta
         if type(theta)!='NoneType':theta=np.array(theta)
         else: theta = self.theta
+        #return np.sum(around(self.x.dot(theta).transpose() - self.y)**2)/(2*self.m)
         return np.sum((self.x.dot(theta).transpose() - self.y)**2)/(2*self.m)
 
     def _calculo_gradiente(self, set_value: Optional[bool] = False, theta: Optional[np.array] = None):

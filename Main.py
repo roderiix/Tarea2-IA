@@ -85,8 +85,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #     self.running = True
         #     self.btn_start.setText('Abortar')
         #     self.graph_data.clear()
-        #     self.graph_cost.clear()
-        #     self.graph_3d.clear()
+        # self.graph_cost.clear()
+        # self.graph_3d.clear()
 
         itr = self.itr_input.value()
         alpha = self.alpha_input.value()
@@ -103,12 +103,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #     return
     
         # 1 - graph data
-        x1,y1=[],[]
-        for i in range (len(datos[:,0])):
-            x1.append(datos[:,0][i])
-            y1.append(datos[:,1][i])
         pen = pg.mkPen(color=(255, 255, 255))
-        self.graph_data.plot(x1, y1,pen=pen,symbol='x',symbolSize=10)   
+        self.graph_data.plot(datos[:,0], datos[:,1],pen=pen,symbol='x',symbolSize=10)  
 
         #2 - graph 3d surface
 
