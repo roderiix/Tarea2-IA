@@ -1,3 +1,4 @@
+from copy import copy
 import sys
 from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
@@ -27,11 +28,20 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.running = False
         self.stop = False
 
+        styles = {'color':'r', 'font-size':'20px'}
         self.graph_cost.setTitle("Costo por Iteracion", color="black", size="15pt")
         self.graph_cost.setBackground('w')
+        self.graph_cost.setLabel('left', "<span style=\"color:gray;font-size:15px\">Costo</span>")
+        self.graph_cost.setLabel('bottom', "<span style=\"color:gray;font-size:15px\">Iteracion</span>")
 
         self.graph_data.setTitle("Habitantes/Precio", color="black", size="15pt")
         self.graph_data.setBackground('w')
+        self.graph_data.setLabel('left', "<span style=\"color:gray;font-size:15px\">Precio</span>")
+        self.graph_data.setLabel('bottom', "<span style=\"color:gray;font-size:15px\">Habitantes</span>")
+
+        self.graph_25d.setBackground('w')
+        self.graph_25d.setLabel('left', "<span style=\"color:gray;font-size:15px\">thetha 0</span>")
+        self.graph_25d.setLabel('bottom', "<span style=\"color:gray;font-size:15px\">thetha 1</span>")
 
         self.graph_3d.opts['distance'] = 75
         self.graph_3d.show()
@@ -84,7 +94,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         # else:
         #     self.running = True
         #     self.btn_start.setText('Abortar')
-        #     self.graph_data.clear()
+        self.graph_data.clear()
         # self.graph_cost.clear()
         # self.graph_3d.clear()
 
@@ -103,8 +113,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #     return
     
         # 1 - graph data
+        x1,y1=[],[]
+        for i in range (len(datos[:,0])):
+            x1.append(datos[:,0][i])
+            y1.append(datos[:,1][i])
         pen = pg.mkPen(color=(255, 255, 255))
-        self.graph_data.plot(datos[:,0], datos[:,1],pen=pen,symbol='x',symbolSize=10)  
+        self.graph_data.plot(x1, y1,pen=pen,symbol='x',symbolSize=10)    
 
         #2 - graph 3d surface
 
@@ -118,10 +132,20 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         for index, v in np.ndenumerate(J):
             J[index] = self.reg.costo([theta0arr[index],theta1arr[index]])
 
-        p1 = gl.GLSurfacePlotItem(x=xs*10,y=ys*20,z=J/2, shader='normalColor')
-        p1.translate(20, -10, -10)
+        p1 = gl.GLSurfacePlotItem(x=xs,y=ys,z=J/100, shader='normalColor')
+        p1.translate(0, 0, -15)
         self.graph_3d.addItem(p1)
 
+        #4 - graph contour
+
+        # theta0arr=np.cos(theta0arr)
+        # theta1arr=np.sin(theta1arr)
+        # contour_theta = np.append(np.reshape(theta0arr, (theta0arr.size, 1)),np.reshape(theta1arr, (theta1arr.size, 1)) , axis=1)
+
+        contour_theta=np.sin(theta0arr) + np.cos(theta1arr)
+        pen = pg.mkPen(color=(0, 0, 0))
+        contour = pg.IsocurveItem(contour_theta,pen=pen)
+        self.graph_25d.addItem(contour)
 
         # "real time" graph update
         self.execute_regression(itr, alpha, datos)
@@ -156,7 +180,11 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.itr_progress.setValue(int((i+1)*100/itr))
 
             #update 3d graph
-                # actualizar los puntos de la recta
+                
+            # if(i%100==0):
+            #     fig=gl.GLScatterPlotItem(pos=np.append(theta,costo))
+            #     # fig.translate(0, 0, -10)
+            #     self.graph_3d.addItem(fig)
 
             #update data graph
                 # actualizar la posicion de la recta hipotesis
