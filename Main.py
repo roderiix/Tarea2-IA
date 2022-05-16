@@ -35,7 +35,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.graph_3d.opts['distance'] = 75
         self.graph_3d.show()
-        self.direccion=''
+        self.direccion=self.file_path.text()
         large=40
         gx = gl.GLGridItem()
         gx.setSize(large,large,large)
