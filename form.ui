@@ -170,6 +170,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="text">
+     <string>data1.txt</string>
+    </property>
     <property name="frame">
      <bool>true</bool>
     </property>
