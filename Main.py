@@ -39,9 +39,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graph_data.setLabel('left', "<span style=\"color:gray;font-size:15px\">Precio</span>")
         self.graph_data.setLabel('bottom', "<span style=\"color:gray;font-size:15px\">Habitantes</span>")
 
-        self.graph_25d.setBackground('w')
-        self.graph_25d.setLabel('left', "<span style=\"color:gray;font-size:15px\">thetha 0</span>")
-        self.graph_25d.setLabel('bottom', "<span style=\"color:gray;font-size:15px\">thetha 1</span>")
+        # self.graph_25d.setBackground('w')
+        # self.graph_25d.setLabel('left', "<span style=\"color:gray;font-size:15px\">thetha 0</span>")
+        # self.graph_25d.setLabel('bottom', "<span style=\"color:gray;font-size:15px\">thetha 1</span>")
 
         self.graph_3d.opts['distance'] = 75
         self.graph_3d.show()
@@ -95,8 +95,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #     self.running = True
         #     self.btn_start.setText('Abortar')
         self.graph_data.clear()
+
         # self.graph_cost.clear()
-        # self.graph_3d.clear()
+        try:
+            self.graph_3d.removeItem(p1)
+        except:
+            pass
 
         itr = self.itr_input.value()
         alpha = self.alpha_input.value()
@@ -142,10 +146,10 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         # theta1arr=np.sin(theta1arr)
         # contour_theta = np.append(np.reshape(theta0arr, (theta0arr.size, 1)),np.reshape(theta1arr, (theta1arr.size, 1)) , axis=1)
 
-        contour_theta=np.sin(theta0arr) + np.cos(theta1arr)
-        pen = pg.mkPen(color=(0, 0, 0))
-        contour = pg.IsocurveItem(contour_theta,pen=pen)
-        self.graph_25d.addItem(contour)
+        # contour_theta=np.sin(theta0arr) + np.cos(theta1arr)
+        # pen = pg.mkPen(color=(0, 0, 0))
+        # contour = pg.IsocurveItem(contour_theta,pen=pen)
+        # self.graph_25d.addItem(contour)
 
         # "real time" graph update
         self.execute_regression(itr, alpha, datos)
@@ -206,7 +210,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             )
             self.graph_data.addItem(graph_data_item)
 
-            QtWidgets.QApplication.processEvents()
+            # QtWidgets.QApplication.processEvents()
 
 app =  QtWidgets.QApplication(sys.argv)
 window = MyApp()
