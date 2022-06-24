@@ -68,11 +68,11 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.search_btn.clicked.connect(lambda:self.probar_valor())
         self.btn_buscar.clicked.connect(lambda:self.buscarArchivo())
 
-    def Msj_Error(self):
+    def Msj_Error(self,msg):
         EntryMsg = QMessageBox()
         EntryMsg.setIcon(QMessageBox.Warning)
         EntryMsg.setWindowTitle('Error!')
-        EntryMsg.setText('No hay archivo seleccionado')
+        EntryMsg.setText(msg)
         EntryMsg.setStandardButtons(QMessageBox.Ok)
         EntryMsg.setDefaultButton(QMessageBox.Ok)
         EntryMsg.exec_()
@@ -85,10 +85,14 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def verificarArchivo(self):
         if self.direccion: self.grafico()
-        else: self.Msj_Error()
+        else: self.Msj_Error('No hay archivo seleccionado')
 
     def grafico(self):
 
+        if self.running:
+            self.Msj_Error('Ya esta corriendo')
+            return
+        self.running=True
         # if self.running and not self.stop and self.btn_start.text() == 'Abortar':
         #     self.stop = True
         # else:
@@ -157,6 +161,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         # output theta
         self.theta1_input.setValue(self.reg.theta[0])
         self.theta2_input.setValue(self.reg.theta[1])
+        self.running=False
 
     def probar_valor(self):
         value = self.test_input.value()
