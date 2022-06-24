@@ -52,7 +52,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btn_buscar.clicked.connect(lambda:self.buscarArchivo())
         self.btnGraphContorno.clicked.connect(lambda:self.GraphContorno())
         self.btnGraph3D.clicked.connect(lambda:self.grafico3D())
-        self.pushButton_3.clicked.connect(lambda:self.graphNormal())
+        self.btnNormal.clicked.connect(lambda:self.graphNormal())
 
     def Msj_Error(self):
         EntryMsg = QMessageBox()
