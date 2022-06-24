@@ -1,5 +1,4 @@
 import numpy as np
-from typing import Optional,Union
 from misc import *
 
 class Regresion:
@@ -26,19 +25,19 @@ class Regresion:
         for index, v in np.ndenumerate(self.grid['costo']):
             self.grid['costo'][index] = self.costo([self.grid['x'][index],self.grid['y'][index]])
     
-    def hipotesis(self, x, theta: Optional[np.array] = None):
+    def hipotesis(self, x, theta = None):
         if type(x) != np.ndarray: x = np.array(x)
         if type(theta) != np.ndarray: theta = self.theta
         if x.shape != (2,): x = np.append([1], x)
         return np.sum(x.dot(self.theta))
 
-    def costo(self, theta: Optional[Union[np.ndarray, list]] = None):
+    def costo(self, theta = None):
         # if type(theta) != np.ndarray: theta = self.theta
         if type(theta)!='NoneType':theta=np.array(theta)
         else: theta = self.theta
         return np.sum((self.x.dot(theta).transpose() - self.y)**2)/(2*self.m)
 
-    def _calculo_gradiente(self, set_value: Optional[bool] = False, theta: Optional[np.array] = None):
+    def _calculo_gradiente(self, set_value = False, theta = None):
         if type(theta) != np.ndarray: theta = self.theta
         _theta = np.array(theta)
         aux = self.x.dot(theta)

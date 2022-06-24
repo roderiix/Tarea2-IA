@@ -4,7 +4,6 @@ from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
-import pyqtgraph.opengl as gl
 from matplotlib import pyplot as plt
 from Reader import Reader
 from Regresion import Regresion
@@ -53,7 +52,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btn_buscar.clicked.connect(lambda:self.buscarArchivo())
         self.btnGraphContorno.clicked.connect(lambda:self.GraphContorno())
         self.btnGraph3D.clicked.connect(lambda:self.grafico3D())
-
+        self.pushButton_3.clicked.connect(lambda:self.graphNormal())
 
     def Msj_Error(self):
         EntryMsg = QMessageBox()
@@ -148,7 +147,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             #update progress bar
             self.itr_progress.setValue(int((i+1)*100/itr))
 
-            # QtWidgets.QApplication.processEvents()
+            #QtWidgets.QApplication.processEvents()
     
     def GraphContorno(self):
         xs=np.linspace(-10,10,100)
@@ -175,6 +174,22 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             ax1.plot(self.reg.historial['theta'][i][0], self.reg.historial['theta'][i][1],self.reg.historial['costo'][i], 'bo')
         plt.show()
         print(self.reg.normal())
+    
+    def graphNormal(self):
+        plt.figure(figsize=(12, 8))
+        plt.title("Ecuacion Normal")
+        #plt.plot(self.reg.x[:,1], self.reg.y,"x",markersize=2,color="red")
+        plt.plot(self.reg.normal())
+        plt.grid()
+        plt.show()
+        # normal = self.reg.normal()
+        # graph_data_item = pg.InfiniteLine(
+        #         pos=[0, self.reg.hipotesis(0, normal)],
+        #         movable=False,
+        #         angle=degree([1,self.reg.hipotesis(1, normal)],[1,0]),
+        #         pen='r'
+        #     )
+        # self.graph_data.addItem(graph_data_item)
 
 
 app =  QtWidgets.QApplication(sys.argv)
