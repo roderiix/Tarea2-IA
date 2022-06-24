@@ -38,16 +38,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="GLViewWidget" name="graph_3d" native="true">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>270</y>
-     <width>311</width>
-     <height>251</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="PlotWidget" name="graph_cost" native="true">
    <property name="geometry">
     <rect>
@@ -365,44 +355,63 @@
     <string>Iniciar</string>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
+  <widget class="QPushButton" name="btnGraphContorno">
    <property name="geometry">
     <rect>
-     <x>329</x>
-     <y>269</y>
-     <width>311</width>
-     <height>251</height>
+     <x>170</x>
+     <y>310</y>
+     <width>151</width>
+     <height>27</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QPushButton" name="graph_Contorno">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Grafico de Contorno</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="text">
-       <string>Ecuacion normal</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>Grafico de Contorno</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_3">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>310</y>
+     <width>141</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Ecuacion normal</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>310</y>
+     <width>141</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnGraph3D">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>151</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Grafico 3D</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>
@@ -410,12 +419,6 @@
    <class>PlotWidget</class>
    <extends>QWidget</extends>
    <header location="global">pyqtgraph</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>GLViewWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">pyqtgraph.opengl</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
