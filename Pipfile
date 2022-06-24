@@ -9,6 +9,7 @@ pyqtgraph = "*"
 pyopengl = "*"
 numpy = "*"
 typing = "*"
+matplotlib = "*"
 
 [dev-packages]
 

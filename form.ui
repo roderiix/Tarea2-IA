@@ -58,16 +58,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="graph_25d" native="true">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>270</y>
-     <width>311</width>
-     <height>251</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
@@ -107,7 +97,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Alpha</string>
+    <string>tasa de aprendizaje</string>
    </property>
    <widget class="QDoubleSpinBox" name="alpha_input">
     <property name="geometry">
@@ -117,6 +107,15 @@
       <width>201</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="decimals">
+     <number>3</number>
+    </property>
+    <property name="maximum">
+     <double>0.020000000000000</double>
+    </property>
+    <property name="singleStep">
+     <double>0.010000000000000</double>
     </property>
    </widget>
   </widget>
@@ -225,6 +224,9 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="maximum">
+     <double>90000.000000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="result_output">
     <property name="geometry">
@@ -234,6 +236,9 @@
       <width>131</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="maximum">
+     <double>90000.000000000000000</double>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
@@ -273,7 +278,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Theta</string>
+    <string>Pesos</string>
    </property>
    <widget class="QDoubleSpinBox" name="theta1_input">
     <property name="enabled">
@@ -286,6 +291,17 @@
       <width>171</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>11</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="decimals">
+     <number>3</number>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="theta2_input">
@@ -300,6 +316,14 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>11</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -311,7 +335,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>1</string>
+     <string>0</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -324,7 +348,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>2</string>
+     <string>1</string>
     </property>
    </widget>
   </widget>
@@ -340,6 +364,45 @@
    <property name="text">
     <string>Iniciar</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>329</x>
+     <y>269</y>
+     <width>311</width>
+     <height>251</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="graph_Contorno">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Grafico de Contorno</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Ecuacion normal</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>PushButton</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <customwidgets>
