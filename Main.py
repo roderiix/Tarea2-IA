@@ -53,6 +53,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnGraphContorno.clicked.connect(lambda:self.GraphContorno())
         self.btnGraph3D.clicked.connect(lambda:self.grafico3D())
         self.btnNormal.clicked.connect(lambda:self.graphNormal())
+        self.btnGraph3D.setEnabled(False)
+        self.btnGraphContorno.setEnabled(False)
+        self.btnNormal.setEnabled(False)
 
     def Msj_Error(self):
         EntryMsg = QMessageBox()
@@ -74,7 +77,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         else: self.Msj_Error()
 
     def grafico(self):
-
+        self.btn_start.setEnabled(False)
         # if self.running and not self.stop and self.btn_start.text() == 'Abortar':
         #     self.stop = True
         # else:
@@ -113,6 +116,18 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.theta1_input.setValue(self.reg.theta[0])
         self.theta2_input.setValue(self.reg.theta[1])
 
+        self.theta0f.setValue(self.reg.theta[0])
+        self.theta1f.setValue(self.reg.theta[1])
+        self.theta0n.setValue(self.reg.normal()[0])
+        self.theta1n.setValue(self.reg.normal()[1])
+        self.resultado35.setValue(self.reg.hipotesis(35000))
+        self.resultado75.setValue(self.reg.hipotesis(75000))
+        self.btnGraph3D.setEnabled(True)
+        self.btnGraphContorno.setEnabled(True)
+        self.btnNormal.setEnabled(True)
+        self.btn_start.setEnabled(True)
+
+
     def probar_valor(self):
         value = self.test_input.value()
         try:
@@ -147,7 +162,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             #update progress bar
             self.itr_progress.setValue(int((i+1)*100/itr))
 
-            #QtWidgets.QApplication.processEvents()
+            QtWidgets.QApplication.processEvents()
     
     def GraphContorno(self):
         xs=np.linspace(-10,10,100)
@@ -173,7 +188,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range(0,self.itr_input.value(),int(self.itr_input.value()/10)):
             ax1.plot(self.reg.historial['theta'][i][0], self.reg.historial['theta'][i][1],self.reg.historial['costo'][i], 'bo')
         plt.show()
-        print(self.reg.normal())
     
     def graphNormal(self):
         plt.figure(figsize=(12, 8))
