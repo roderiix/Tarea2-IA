@@ -1,5 +1,5 @@
-from copy import copy
 import sys
+import os
 from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from pyqtgraph import PlotWidget, plot
@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 from Reader import Reader
 from Regresion import Regresion
 from misc import *
-import time
 import numpy as np
 qtCreatorFile = "form.ui"
 
@@ -72,8 +71,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.file_path.setText(str(fname[0][0]))
             self.direccion=self.file_path.text()
 
-    def verificarArchivo(self):
-        if self.direccion: self.grafico()
+    def verificarArchivo(self):    
+        if os.path.exists(self.direccion): self.grafico()
         else: self.Msj_Error()
 
     def grafico(self):
@@ -113,8 +112,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.execute_regression(itr, alpha, datos)
 
         # output theta
-        self.theta1_input.setValue(self.reg.theta[0])
-        self.theta2_input.setValue(self.reg.theta[1])
+        #self.theta1_input.setValue(self.reg.theta[0])
+        #self.theta2_input.setValue(self.reg.theta[1])
 
         self.theta0f.setValue(self.reg.theta[0])
         self.theta1f.setValue(self.reg.theta[1])
@@ -142,7 +141,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         graph_data_item = None
         for i in range(itr):
             if self.stop: return
-            self.reg._calculo_gradiente(set_value=True)
+            costo,_= self.reg._calculo_gradiente(set_value=True)
             itr_arr.append(i)
 
             # udpdate data graph line
@@ -161,7 +160,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
             #update progress bar
             self.itr_progress.setValue(int((i+1)*100/itr))
-
+            self.costoF.setValue(costo)
             QtWidgets.QApplication.processEvents()
     
     def GraphContorno(self):
