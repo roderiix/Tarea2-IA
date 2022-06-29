@@ -20,12 +20,10 @@ En la terminal ir a la carpeta donde esta el main.py y ejecutar los siguientes c
 
 *pipenv install*
 
-### Paso 4
-
 *python main.py*
 
-
-**si ya los instalo y lo quiere volver a abrir ejecutar los siguientes comando en la terminal en la direccion de main.py**
+--------------------------------------------------------------------------------------------------------------------------
+**Si ya los instalo y lo quiere volver a abrir ejecutar los siguientes comando en la terminal en la direccion de main.py**
 
 *pipenv shell*
 
