@@ -6,10 +6,9 @@ name = "pypi"
 [packages]
 pyqt5 = "*"
 pyqtgraph = "*"
-pyopengl = "*"
 numpy = "*"
-typing = "*"
 matplotlib = "*"
+pyinstaller = "*"
 
 [dev-packages]
 

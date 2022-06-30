@@ -11,8 +11,3 @@ def degree(vect1, vect2):
     rad = np.arccos(np.clip(cos, -1.0, 1.0))
     deg = np.rad2deg(rad)
     return deg
-
-def around(array):
-    arr = array.astype(float)
-    np.round(a=arr, decimals=0, out=arr)
-    return arr
