@@ -45,11 +45,11 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnGraphContorno.setEnabled(False)
         self.btnNormal.setEnabled(False)
 
-    def Msj_Error(self):
+    def Msj_Error(self,msg):
         EntryMsg = QMessageBox()
         EntryMsg.setIcon(QMessageBox.Warning)
         EntryMsg.setWindowTitle('Error!')
-        EntryMsg.setText('No hay archivo seleccionado')
+        EntryMsg.setText(msg)
         EntryMsg.setStandardButtons(QMessageBox.Ok)
         EntryMsg.setDefaultButton(QMessageBox.Ok)
         EntryMsg.exec_()
@@ -66,6 +66,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def grafico(self):
         self.btn_start.setEnabled(False)
+
         self.graph_data.clear()
 
         itr = self.itr_input.value()
@@ -85,6 +86,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graph_data.plot(x1, y1,pen=pen,symbol='x',symbolSize=10)    
 
         # "real time" graph update
+
         self.execute_regression(itr)
 
         # out result
@@ -98,6 +100,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnGraphContorno.setEnabled(True)
         self.btnNormal.setEnabled(True)
         self.btn_start.setEnabled(True)
+
 
     def probar_valor(self):
         value = self.test_input.value()
