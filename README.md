@@ -1,8 +1,9 @@
 # Tarea1-IA
 
-##Correr desde ejecutable
+## Correr desde ejecutable
 
 El archivo Main.exe no necesita instalar ninguna libreria 
+
 Nota:El archivo Main.exe mantener junto a form.ui
 
 ## Correr desde codigo fuente
