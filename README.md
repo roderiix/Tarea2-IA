@@ -1,6 +1,11 @@
 # Tarea1-IA
 
-## Instalar
+##Correr desde ejecutable
+
+El archivo Main.exe no necesita instalar ninguna libreria 
+Nota:El archivo Main.exe mantener junto a form.ui
+
+## Correr desde codigo fuente
 
 ### Paso 1 
 Verificar si puedes ocupar python en la termina si no mirar este video:
