@@ -20,14 +20,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.alpha_input.setValue(0.01)
-        self.alpha_input.setRange(-1., 1.)
-        self.theta1_input.setRange(-9999, 9999)
-        self.theta2_input.setRange(-9999, 9999)
-        self.result_output.setRange(-9999, 9999)
-        self.running = False
-        self.stop = False
 
-        styles = {'color':'r', 'font-size':'20px'}
         self.graph_cost.setTitle("Costo por Iteracion", color="black", size="15pt")
         self.graph_cost.setBackground('w')
         self.graph_cost.setLabel('left', "<span style=\"color:gray;font-size:15px\">Costo</span>")
@@ -37,10 +30,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graph_data.setBackground('w')
         self.graph_data.setLabel('left', "<span style=\"color:gray;font-size:15px\">Precio</span>")
         self.graph_data.setLabel('bottom', "<span style=\"color:gray;font-size:15px\">Habitantes</span>")
-
-        # self.graph_25d.setBackground('w')
-        # self.graph_25d.setLabel('left', "<span style=\"color:gray;font-size:15px\">thetha 0</span>")
-        # self.graph_25d.setLabel('bottom', "<span style=\"color:gray;font-size:15px\">thetha 1</span>")
 
         self.direccion=self.file_path.text()
         
@@ -96,38 +85,31 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graph_data.plot(x1, y1,pen=pen,symbol='x',symbolSize=10)    
 
         # "real time" graph update
-        self.execute_regression(itr, alpha, datos)
+        self.execute_regression(itr)
 
-        # output theta
-        #self.theta1_input.setValue(self.reg.theta[0])
-        #self.theta2_input.setValue(self.reg.theta[1])
-
+        # out result
         self.theta0f.setValue(self.reg.theta[0])
         self.theta1f.setValue(self.reg.theta[1])
         self.theta0n.setValue(self.reg.normal()[0])
         self.theta1n.setValue(self.reg.normal()[1])
-        self.resultado35.setValue(self.reg.hipotesis(35000))
-        self.resultado75.setValue(self.reg.hipotesis(75000))
+        self.resultado35.setValue(self.reg.hipotesis(3.5))
+        self.resultado75.setValue(self.reg.hipotesis(7))
         self.btnGraph3D.setEnabled(True)
         self.btnGraphContorno.setEnabled(True)
         self.btnNormal.setEnabled(True)
         self.btn_start.setEnabled(True)
 
-
     def probar_valor(self):
         value = self.test_input.value()
-        try:
-            self.result_output.setValue(self.reg.hipotesis(value))
-        except:
-            pass
+        try: self.result_output.setValue(self.reg.hipotesis(value))
+        except: pass
 
-    def execute_regression(self, itr, alpha, datos):
+    def execute_regression(self, itr):
 
         itr_arr = []
 
         graph_data_item = None
         for i in range(itr):
-            if self.stop: return
             costo,_= self.reg._calculo_gradiente(set_value=True)
             itr_arr.append(i)
 
@@ -151,8 +133,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             QtWidgets.QApplication.processEvents()
     
     def GraphContorno(self):
-        xs=np.linspace(-10,10,100)
-        ys=np.linspace(-5,5,100)
         fig = plt.figure()
         ax2 = fig.add_subplot()
         ax2.contour(self.reg.grid['x'], self.reg.grid['y'], self.reg.grid['costo'], np.logspace(-2, 3, 20), cmap='jet')
@@ -164,32 +144,21 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         plt.show()
 
     def grafico3D(self):
-        xs=np.linspace(-10,10,100)
-        ys=np.linspace(-5,5,100)
         fig = plt.figure()
-        ax1 = fig.add_subplot( projection='3d')
-        ax1.plot_surface(self.reg.grid['x'], self.reg.grid['y'], self.reg.grid['costo'], alpha=0.5, cmap='jet')
-        ax1.set_zlabel('Costo', fontsize=12)
-        ax1.set_title('Superficie de la funcion de costo')
+        g3d = fig.add_subplot( projection='3d')
+        g3d.plot_surface(self.reg.grid['x'], self.reg.grid['y'], self.reg.grid['costo'], alpha=0.5, cmap='jet')
+        g3d.set_zlabel('Costo', fontsize=12)
+        g3d.set_title('Superficie de la funcion de costo')
         for i in range(0,self.itr_input.value(),int(self.itr_input.value()/10)):
-            ax1.plot(self.reg.historial['theta'][i][0], self.reg.historial['theta'][i][1],self.reg.historial['costo'][i], 'bo')
+            g3d.plot(self.reg.historial['theta'][i][0], self.reg.historial['theta'][i][1],self.reg.historial['costo'][i], 'bo')
         plt.show()
     
     def graphNormal(self):
         plt.figure(figsize=(12, 8))
         plt.title("Ecuacion Normal")
-        #plt.plot(self.reg.x[:,1], self.reg.y,"x",markersize=2,color="red")
         plt.plot(self.reg.normal())
         plt.grid()
         plt.show()
-        # normal = self.reg.normal()
-        # graph_data_item = pg.InfiniteLine(
-        #         pos=[0, self.reg.hipotesis(0, normal)],
-        #         movable=False,
-        #         angle=degree([1,self.reg.hipotesis(1, normal)],[1,0]),
-        #         pen='r'
-        #     )
-        # self.graph_data.addItem(graph_data_item)
 
 
 app =  QtWidgets.QApplication(sys.argv)

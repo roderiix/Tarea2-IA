@@ -35,7 +35,7 @@ class Regresion:
         # if type(theta) != np.ndarray: theta = self.theta
         if type(theta)!='NoneType':theta=np.array(theta)
         else: theta = self.theta
-        return np.sum((self.x.dot(theta).transpose() - self.y)**2)/(2*self.m)
+        return np.sum((self.x.dot(theta).transpose() - self.y)**2)/(2*self.m)    #se transpose porque las matrizes no eran de la misma dimensiones
 
     def _calculo_gradiente(self, set_value = False, theta = None):
         if type(theta) != np.ndarray: theta = self.theta
