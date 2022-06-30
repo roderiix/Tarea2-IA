@@ -77,14 +77,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def grafico(self):
         self.btn_start.setEnabled(False)
-        # if self.running and not self.stop and self.btn_start.text() == 'Abortar':
-        #     self.stop = True
-        # else:
-        #     self.running = True
-        #     self.btn_start.setText('Abortar')
         self.graph_data.clear()
-
-        # self.graph_cost.clear()
 
         itr = self.itr_input.value()
         alpha = self.alpha_input.value()
@@ -92,13 +85,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         reader = Reader(self.direccion)
         datos = reader.txt_to_array()
 
-        self.reg=Regresion(data=datos, alpha=alpha)
-        # if self.running and self.stop:
-        #     self.btn_start.setText('Iniciar')
-        #     self.running = False
-        #     self.stop = False
-        #     self.itr_progress.setValue(0)
-        #     return
+        self.reg=Regresion(data=datos, theta= np.array([self.theta1_input.value(), self.theta2_input.value()]), alpha=alpha)
     
         # 1 - graph data
         x1,y1=[],[]

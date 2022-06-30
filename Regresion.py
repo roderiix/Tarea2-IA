@@ -4,7 +4,7 @@ from misc import *
 class Regresion:
 
     def __init__(self, data, theta=None, alpha=None):
-        self.theta = np.array(theta) if theta else np.array(np.zeros(data.shape[1]))
+        self.theta = np.array(theta) if theta.any() else np.array(np.zeros(data.shape[1]))
         self.alpha = alpha or 0.01
         self.m = len(data)
         self.x = np.append(np.ones((self.m, 1)), np.reshape(np.array(data[:, 0]), (self.m, 1)), axis=1)
