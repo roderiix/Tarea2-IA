@@ -1,56 +1,58 @@
 import numpy as np
-from misc import *
+from scipy.optimize import minimize, fmin
+from scipy.special import expit
 
 class Regresion:
 
-    def __init__(self, data, theta=None, alpha=None):
-        self.theta = np.array(theta) if theta.any() else np.array(np.zeros(data.shape[1]))
-        self.alpha = alpha or 0.01
-        self.m = len(data)
-        self.x = np.append(np.ones((self.m, 1)), np.reshape(np.array(data[:, 0]), (self.m, 1)), axis=1)
-        self.y = np.array(data[:, 1])
+    def __init__(self, data, theta=None):
+        self.x, self.y = data
+        self.theta = np.array(np.zeros(self.x.shape[1])) if not theta else np.array(theta)
+        self.m = len(self.x)
 
-        xs=np.linspace(-10,10,100)
-        ys=np.linspace(-5,5,100)
-        xx, yy = np.meshgrid(xs, ys)
-        self.grid = {
-            'costo': np.zeros((100, 100)),
-            'x': xx,
-            'y': yy,
-        }
-        self.historial = {
-            'theta': [],
-            'costo':[],
-        }
-        for index, v in np.ndenumerate(self.grid['costo']):
-            self.grid['costo'][index] = self.costo([self.grid['x'][index],self.grid['y'][index]])
-    
-    def hipotesis(self, x, theta = None):
+    def hipotesis(self, x, theta=None):
         if type(x) != np.ndarray: x = np.array(x)
+        if type(theta) == list: theta=np.array(theta)
         if type(theta) != np.ndarray: theta = self.theta
-        if x.shape != (2,): x = np.append([1], x)
-        return np.sum(x.dot(self.theta))
-
-    def costo(self, theta = None):
-        # if type(theta) != np.ndarray: theta = self.theta
-        if type(theta)!='NoneType':theta=np.array(theta)
-        else: theta = self.theta
-        return np.sum((self.x.dot(theta).transpose() - self.y)**2)/(2*self.m)    #se transpose porque las matrizes no eran de la misma dimensiones
-
-    def _calculo_gradiente(self, set_value = False, theta = None):
+        return expit(np.dot(theta, x.T))
+    
+    def cost(self, theta = None):
+        if type(theta) == list:theta=np.array(theta)
+        if type(theta) != np.ndarray: theta = self.theta
+        h = self.hipotesis(x=self.x, theta=theta)
+        return -np.sum(self.y*np.log(h) + (1-self.y)*np.log(1-h))/(self.m)
+    
+    def optimize(self, theta = None, save = True):
+        if type(theta) == list:theta=np.array(theta)
         if type(theta) != np.ndarray: theta = self.theta
         _theta = np.array(theta)
-        aux = self.x.dot(theta)
-        
-        for i in range(_theta.shape[0]):
-            _theta[i] = float(_theta[i] - self.alpha*np.array((aux - self.y)*self.x[:, i]).sum()/self.m)
-        costo = self.costo(_theta)
-        if set_value:
-            self.historial['costo'].append(costo)
-            self.historial['theta'].append(_theta)
-            self.theta = _theta
-        return costo,_theta
+
+        result = fmin(
+            self.cost,
+            x0=_theta,
+            maxiter=400,
+            full_output=True
+            )
+        if save: self.theta = result[0]
+        return result[1], result[0]
     
-    def normal(self):
-        x_t = self.x.transpose()
-        return np.linalg.inv(np.float_(x_t.dot(self.x))).dot(x_t).dot(self.y)
+    def predict(self, x, theta = None): #3.2.3 #arreglar porcentaje
+        if type(theta) == list:theta=np.array(theta)
+        if type(theta) != np.ndarray: theta = self.theta
+        values = self.hipotesis(x=x, theta=theta)
+
+        def decision_boundary(prob):
+            return 1 if prob >= .5 else 0
+
+        decision_boundary = np.vectorize(decision_boundary)
+        prediction = np.reshape(decision_boundary(values).flatten(), (self.m, 1))
+        total = prediction + self.y.T
+        success = total[np.in1d(total, np.asarray([2.]))]
+        return 100*len(success)/len(total)
+
+    def performance(self, prediction, result): #3.3
+        pass
+
+        #recall, precision, f_measure
+
+        # obtener 80% aleatorio de los datos para entrenamiento
+        # el 20% restante es para perfomance

@@ -4,13 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyqt5 = "*"
-pyqtgraph = "*"
 numpy = "*"
 matplotlib = "*"
-pyinstaller = "*"
+scipy = "*"
 
 [dev-packages]
-
-[requires]
-python_version = "3.8.2"
