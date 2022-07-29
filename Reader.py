@@ -10,7 +10,8 @@ class Reader:
         self.data = np.hstack((self.x, self.y.T))
 
     def get_data(self):
-        return self.x, self.y
+        # return self.x, self.y
+        return self.data
 
     def get_groups(self):
         group0 = self.data[np.in1d(self.data[:, 3], np.asarray([0.]))]

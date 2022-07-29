@@ -1,27 +1,42 @@
 import numpy as np
-from scipy.optimize import minimize, fmin
-from scipy.special import expit
 from Reader import Reader
 from Regresion import Regresion
 
 reader = Reader('ex2data1.txt')
-x,y = reader.get_data()
-# [[x0,x1,x2], y]
+data = reader.get_data()
+# data = [[x0,x1,x2], y]
 
 # group0, group1 = reader.get_groups()
 
-reg = Regresion(data=[x,y])
+# separar data en 2 grupos, al 80% y 20%, aleatorio
+training_data = data[np.random.choice(data.shape[0], 80, replace=False)]
+# test_data = np.setdiff1d(data, training_data, False)
 
-# # hipotesis
-# print(reg.predict(x=[0,0,0]))
+# separar data en 2 grupos, al 80% y 20%, no-aleatorio
+training_data = data[0:80,:]
+test_data = data[80:,:]
+reg = Regresion(training_data=training_data, test_data=test_data)
 
-# # costo
-# print(reg.cost(theta=[0,0,0]))
+# hipotesis
+hipotesis = reg.hipotesis(x=[0,0,0])
+print(f'hipotesis de x={[0,0,0]}: {hipotesis}')
 
-# # optimzie
-# print(reg.theta)
+# costo
+costo =reg.cost(theta=[0,0,0])
+print(f'costo de x={[0,0,0]}: {costo}')
+
+# optimize
 costo, theta = reg.optimize(theta=[0,0,0])
-# print(reg.theta)
-# print(f'costo: {costo}')
+print(f'Theta: {theta}')
+print(f'costo: {costo}')
 
-print(reg.predict(reg.x, theta))
+# prediction
+prediction = reg.predict(x=[0,0,0], theta=theta)
+# print(f'probabilidad: {prob}')
+print(f'prediccion de x={[0,0,0]}: {prediction}')
+
+# perfomance
+recall, precision, fmeasure = reg.perfomance()
+print(f'recall: {recall}')
+print(f'precision: {precision}')
+print(f'f-measure: {fmeasure}')
