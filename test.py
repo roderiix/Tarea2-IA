@@ -18,25 +18,44 @@ test_data = data[80:,:]
 reg = Regresion(training_data=training_data, test_data=test_data)
 
 # hipotesis
-hipotesis = reg.hipotesis(x=[0,0,0])
-print(f'hipotesis de x={[0,0,0]}: {hipotesis}')
+x = [0,0,0]
+hipotesis = reg.hipotesis(x=x)
+print(f'Testeo Hipotesis')
+print(f'\tx: {x}')
+print(f'\tresultado: {round(hipotesis, 3)}')
 
 # costo
-costo =reg.cost(theta=[0,0,0])
-print(f'costo de x={[0,0,0]}: {costo}')
+costo =reg.cost(theta=x)
+print(f'Testeo Costo')
+print(f'\tx: {x}')
+print(f'\ttheta utilizado: {reg.theta}')
+print(f'\tresultado: {round(costo, 3)}')
 
 # optimize
-costo, theta = reg.optimize(theta=[0,0,0])
-print(f'Theta: {theta}')
-print(f'costo: {costo}')
+theta_inicial = [0,0,0]
+costo, theta = reg.optimize(theta=theta_inicial)
+print(f'Optimizacion')
+print(f'\tTheta inicial: {theta_inicial}')
+print(f'\tTheta minimo: {theta}')
+print(f'\tCosto: {round(costo, 3)}')
 
 # prediction
-prediction = reg.predict(x=[0,0,0], theta=theta)
-# print(f'probabilidad: {prob}')
-print(f'prediccion de x={[0,0,0]}: {prediction}')
+# x = [
+#     1.,
+#     float(input('Ingrese examen N1: ')),
+#     float(input('Ingrese examen N2: '))
+# ]
+x = [0,0,0]
+probabilidad, prediction = reg.predict(x=x, theta=theta)
+print(f'Prediccion')
+print(f'\tx: {x}')
+print(f'\ttheta utilizado: {reg.theta}')
+print(f'\tprobabilidad: {probabilidad}')
+print(f'\tresultado: {prediction}')
 
 # perfomance
 recall, precision, fmeasure = reg.perfomance()
-print(f'recall: {recall}')
-print(f'precision: {precision}')
-print(f'f-measure: {fmeasure}')
+print('Rendimiento')
+print(f'\trecall: {recall}')
+print(f'\tprecision: {precision}')
+print(f'\tf-measure: {fmeasure}')

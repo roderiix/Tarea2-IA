@@ -15,6 +15,12 @@ class Regresion:
             self.test_y = np.reshape(test_data[:,3], (test_data.shape[0], 1)).T
             self.test_x = np.array(np.delete(arr=test_data, obj=3, axis=1))
             self.test_m = self.test_x.shape[0]
+        else: 
+            self.test_data = self.training_data
+            self.test_y = self.training_y
+            self.test_x = self.training_x
+            self.test_m = self.training_m
+
         self.theta = np.array(np.zeros(self.training_x.shape[1])) if not theta else np.array(theta) 
 
     def hipotesis(self, x, theta=None):
@@ -41,7 +47,8 @@ class Regresion:
             self.cost,
             x0=_theta,
             maxiter=400,
-            full_output=True
+            full_output=True,
+            disp=False,
             )
         if save: self.theta = result[0]
         # self.__perfomance__()
@@ -51,23 +58,27 @@ class Regresion:
         if type(theta) == list:theta=np.array(theta)
         if type(theta) != np.ndarray: theta = self.theta
         prob = np.sum(self.hipotesis(x=x, theta=theta))
-        # return [prob, 1] if prob >= .5 else [prob, 0]
-        return 1 if prob >= .5 else 0
-
-    def perfomance(self):
+        return [prob, 1] if prob >= .5 else [prob, 0]
+        # return 1 if prob >= .5 else 0
+    
+    def decision_boundary(self, x):
 
         def decision_boundary(prob):
             return 1 if prob >= .5 else 0
-
-        prediction = self.hipotesis(self.test_x)
+        
         decision_boundary = np.vectorize(decision_boundary)
-        prediction = np.reshape(decision_boundary(prediction).flatten(), (self.test_m, 1))
+        prediccion = self.hipotesis(x)
+        return decision_boundary(prediccion)
+
+
+    def perfomance(self):        
+        prediction = np.reshape(self.decision_boundary(self.test_x).flatten(), (self.test_m, 1))
         result = np.hstack((self.test_y.T, prediction)).tolist()
 
         self.true_positive = len(list(filter(lambda row: row[0] == 1. and row[1] == 1., result)))
-        self.false_positive = len(list(filter(lambda row: row[0] == 1. and row[1] == 0., result)))
+        self.false_positive = len(list(filter(lambda row: row[0] == 0. and row[1] == 1., result)))
         self.true_negative = len(list(filter(lambda row: row[0] == 0. and row[1] == 0., result)))
-        self.false_negative = len(list(filter(lambda row: row[0] == 0. and row[1] == 1., result)))
+        self.false_negative = len(list(filter(lambda row: row[0] == 1. and row[1] == 0., result)))
 
         return [
             self.recall,
